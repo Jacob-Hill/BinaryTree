@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace BinaryTree
 {
-    class BinarySearchTree
+    class BinarySearchTree<T> where T : IComparable<T>
     {
         private class TreeNode
         {
-            public TreeNode ParentNode { get; set; }
+            public TreeNode ParentNode;
             public TreeNode[] ChildrenNodes = { null, null };
-            public string Data { get; set; }
-            public TreeNode(string data, TreeNode parent)
+            public T Data;
+            public TreeNode(T data, TreeNode parent)
             {
                 Data = data;
                 ParentNode = parent;
@@ -20,16 +20,16 @@ namespace BinaryTree
 
         private TreeNode root;
 
-        BinarySearchTree(string data) 
+        public BinarySearchTree(T data) 
         {
             root = new TreeNode(data, null);
         }
 
         void AddChild(TreeNode Child, TreeNode parent)
-        {
-            for(int i = 0; i< Child.Data.Length && i<parent.Data.Length; i++)
+        { 
+            for(int i = 0; i< Child.Data.ToString().Length && i<parent.Data.ToString().Length; i++)
             {
-                if (Child.Data[i] < parent.Data[i])
+                if (Child.Data.ToString()[i] < parent.Data.ToString()[i])
                 {
                     if (parent.ChildrenNodes[0] != null)
                     {
@@ -41,7 +41,7 @@ namespace BinaryTree
                         parent.ChildrenNodes[0] = Child;
                     }
                 }
-                else if (Child.Data[i] > parent.Data[i])
+                else if (Child.Data.ToString()[i] > parent.Data.ToString()[i])
                 {
                     if (parent.ChildrenNodes[1] != null)
                     {
@@ -54,7 +54,7 @@ namespace BinaryTree
                     }
                 }
             }
-            if (Child.Data.Length < parent.Data.Length)
+            if (Child.Data.ToString().Length < parent.Data.ToString().Length)
             {
                 if (parent.ChildrenNodes[0] != null)
                 {
@@ -78,23 +78,22 @@ namespace BinaryTree
                     parent.ChildrenNodes[1] = Child;
                 }
             }
-            
         }
 
-        public void AddNode(string data)
+        public void AddNode(T data)
         {
             AddChild(new TreeNode(data, null), root);
         }
 
-        (bool,TreeNode) SearchThroughChildren(string data, TreeNode parent)
+        (bool,TreeNode) SearchThroughChildren(T data, TreeNode parent)
         {
-            for (int i = 0; i < data.Length && i < parent.Data.Length; i++)
+            for (int i = 0; i < data.ToString().Length && i < parent.Data.ToString().Length; i++)
             {
-                if (data[i] < parent.Data[i])
+                if (data.ToString()[i] < parent.Data.ToString()[i])
                 {
                     if (parent.ChildrenNodes[0] != null)
                     {
-                        if (parent.ChildrenNodes[0].Data != data)
+                        if (!parent.ChildrenNodes[0].Data.Equals(data))
                         {
                             SearchThroughChildren(data, parent.ChildrenNodes[0]);
                         }
@@ -108,11 +107,11 @@ namespace BinaryTree
                         return (false,null);
                     }
                 }
-                else if (data[i] > parent.Data[i])
+                else if (data.ToString()[i] > parent.Data.ToString()[i])
                 {
                     if (parent.ChildrenNodes[1] != null)
                     {
-                        if (parent.ChildrenNodes[1].Data != data)
+                        if (!parent.ChildrenNodes[1].Data.Equals(data))
                         {
                             SearchThroughChildren(data, parent.ChildrenNodes[1]);
                         }
@@ -127,11 +126,11 @@ namespace BinaryTree
                     }
                 }
             }
-            if (data.Length < parent.Data.Length)
+            if (data.ToString().Length < parent.Data.ToString().Length)
             {
                 if (parent.ChildrenNodes[0] != null)
                 {
-                    if (parent.ChildrenNodes[0].Data != data)
+                    if (!parent.ChildrenNodes[0].Data.Equals(data))
                     {
                         SearchThroughChildren(data, parent.ChildrenNodes[0]);
                     }
@@ -149,7 +148,7 @@ namespace BinaryTree
             {
                 if (parent.ChildrenNodes[1] != null)
                 {
-                    if (parent.ChildrenNodes[1].Data != data)
+                    if (!parent.ChildrenNodes[1].Data.Equals(data))
                     {
                         SearchThroughChildren(data, parent.ChildrenNodes[1]);
                     }
@@ -166,13 +165,13 @@ namespace BinaryTree
             return (false, null); //Code should never reach this point, but visual studio complains if it is not here
         }
 
-        public bool Contains(string data)
+        public bool Contains(T data)
         {
             (bool a, TreeNode b) =  SearchThroughChildren(data, root); //Don't care about the treeNode, but it is easier to do it this way
             return a;
         }
 
-        public void Remove(string data)
+        public void Remove(T data)
         {
             (bool a, TreeNode b) = SearchThroughChildren(data, root);
             if (a) //Runs if the specified bit of data is in the tree
@@ -216,6 +215,29 @@ namespace BinaryTree
                     }
                 }
             }
+        }
+
+        List<T> InOrder(List<T> data, TreeNode node)
+        {
+            if (node.ChildrenNodes[0] != null)
+            {
+                data.Union(InOrder(data, node.ChildrenNodes[0]));
+            }
+            else
+            {
+                data.Add(node.Data);
+            }
+            if (node.ChildrenNodes[1] != null)
+            {
+                data.Union(InOrder(data, node.ChildrenNodes[1]));
+            }
+            return (data);
+        }
+
+        public List<T> InOrder(T StartPoint)
+        {
+            (bool a, TreeNode b) = SearchThroughChildren(StartPoint, root);
+            return InOrder(new List<T> { }, b);
         }
     }
 }
