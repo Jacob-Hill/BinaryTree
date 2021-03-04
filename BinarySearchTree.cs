@@ -25,57 +25,68 @@ namespace BinaryTree
             root = new TreeNode(data, null);
         }
 
-        void AddChild(TreeNode Child, TreeNode parent)
+        void AddChild(TreeNode child, TreeNode parent)
         { 
-            for(int i = 0; i< Child.Data.ToString().Length && i<parent.Data.ToString().Length; i++)
+            for(int i = 0; i< child.Data.ToString().Length && i<parent.Data.ToString().Length; i++)
             {
-                if (Child.Data.ToString()[i] < parent.Data.ToString()[i])
+                if (child.Data.ToString()[i] < parent.Data.ToString()[i])
                 {
                     if (parent.ChildrenNodes[0] != null)
                     {
-                        AddChild(Child, parent.ChildrenNodes[0]);
+                        AddChild(child, parent.ChildrenNodes[0]);
+                        return;
                     }
                     else
                     {
-                        Child.ParentNode = parent;
-                        parent.ChildrenNodes[0] = Child;
+                        child.ParentNode = parent;
+                        parent.ChildrenNodes[0] = child;
+                        return;
                     }
                 }
-                else if (Child.Data.ToString()[i] > parent.Data.ToString()[i])
+                else if (child.Data.ToString()[i] > parent.Data.ToString()[i])
                 {
                     if (parent.ChildrenNodes[1] != null)
                     {
-                        AddChild(Child, parent.ChildrenNodes[1]);
+                        AddChild(child, parent.ChildrenNodes[1]);
+                        return;
                     }
                     else
                     {
-                        Child.ParentNode = parent;
-                        parent.ChildrenNodes[1] = Child;
+                        child.ParentNode = parent;
+                        parent.ChildrenNodes[1] = child;
+                        return;
                     }
                 }
-            }
-            if (Child.Data.ToString().Length < parent.Data.ToString().Length)
-            {
-                if (parent.ChildrenNodes[0] != null)
+                else if(i==child.Data.ToString().Length-1 || i == parent.Data.ToString().Length - 1)
                 {
-                    AddChild(Child, parent.ChildrenNodes[0]);
-                }
-                else
-                {
-                    Child.ParentNode = parent;
-                    parent.ChildrenNodes[0] = Child;
-                }
-            }
-            else
-            {
-                if (parent.ChildrenNodes[1] != null)
-                {
-                    AddChild(Child, parent.ChildrenNodes[1]);
-                }
-                else
-                {
-                    Child.ParentNode = parent;
-                    parent.ChildrenNodes[1] = Child;
+                    if (child.Data.ToString().Length < parent.Data.ToString().Length)
+                    {
+                        if (parent.ChildrenNodes[0] != null)
+                        {
+                            AddChild(child, parent.ChildrenNodes[0]);
+                            return;
+                        }
+                        else
+                        {
+                            child.ParentNode = parent;
+                            parent.ChildrenNodes[0] = child;
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        if (parent.ChildrenNodes[1] != null)
+                        {
+                            AddChild(child, parent.ChildrenNodes[1]);
+                            return;
+                        }
+                        else
+                        {
+                            child.ParentNode = parent;
+                            parent.ChildrenNodes[1] = child;
+                            return;
+                        }
+                    }
                 }
             }
         }
