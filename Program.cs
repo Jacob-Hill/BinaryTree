@@ -19,12 +19,17 @@ namespace BinaryTree
             BSTflowers.AddNode("buttercup");
             BSTflowers.AddNode("chrysanthemum");
             BSTflowers.AddNode("iris");
+            Console.WriteLine();
             PrintList(BSTflowers.InOrder("sunflower"));
+            Console.WriteLine();
             BSTflowers.Remove("marigold");
             Console.WriteLine(BSTflowers.Contains("marigold"));
             Console.WriteLine(BSTflowers.Contains("iris"));
+            Console.WriteLine();
             BSTflowers.Remove("iris");
             PrintList(BSTflowers.InOrder("lily"));
+            Console.WriteLine();
+            PrintList(BSTflowers.InOrder("sunflower"));
             Console.Read();
         }
 

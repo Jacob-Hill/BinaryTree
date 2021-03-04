@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
 namespace BinaryTree
 {
     class BinarySearchTree<T> where T : IComparable<T>
@@ -17,14 +16,11 @@ namespace BinaryTree
                 ParentNode = parent;
             }
         }
-
         private TreeNode root;
-
         public BinarySearchTree(T data) 
         {
             root = new TreeNode(data, null);
         }
-
         void AddChild(TreeNode child, TreeNode parent)
         { 
             for(int i = 0; i< child.Data.ToString().Length && i<parent.Data.ToString().Length; i++)
@@ -90,12 +86,10 @@ namespace BinaryTree
                 }
             }
         }
-
         public void AddNode(T data)
         {
             AddChild(new TreeNode(data, null), root);
         }
-
         (bool,TreeNode) SearchThroughChildren(T data, TreeNode parent)
         {
             if(parent.Data.Equals(data))
@@ -185,13 +179,11 @@ namespace BinaryTree
             }
             return (false, null); //Code should never reach this point, but visual studio complains if it is not here
         }
-
         public bool Contains(T data)
         {
             (bool a, TreeNode b) =  SearchThroughChildren(data, root); //Don't care about the treeNode, but it is easier to do it this way
             return a;
         }
-
         public void Remove(T data)
         {
             (bool a, TreeNode b) = SearchThroughChildren(data, root);
@@ -237,7 +229,6 @@ namespace BinaryTree
                 }
             }
         }
-
         List<T> InOrder(List<T> data, TreeNode node)
         {
             if (node.ChildrenNodes[0] != null)
@@ -254,11 +245,17 @@ namespace BinaryTree
             }
             return (data);
         }
-
         public List<T> InOrder(T StartPoint)
         {
             (bool a, TreeNode b) = SearchThroughChildren(StartPoint, root);
-            return InOrder(new List<T> { }, b);
+            if (StartPoint.Equals(root.Data))
+            {
+                return InOrder(new List<T> { root.Data }, b);
+            }
+            else
+            {
+                return InOrder(new List<T> { }, b);
+            }
         }
     }
 }
