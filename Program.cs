@@ -21,8 +21,8 @@ namespace BinaryTree
             BSTflowers.AddNode("iris");
             PrintList(BSTflowers.InOrder("sunflower"));
             BSTflowers.Remove("marigold");
-            BSTflowers.Contains("marigold");
-            BSTflowers.Contains("iris");
+            Console.WriteLine(BSTflowers.Contains("marigold"));
+            Console.WriteLine(BSTflowers.Contains("iris"));
             BSTflowers.Remove("iris");
             PrintList(BSTflowers.InOrder("lily"));
             Console.Read();

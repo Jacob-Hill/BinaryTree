@@ -98,79 +98,89 @@ namespace BinaryTree
 
         (bool,TreeNode) SearchThroughChildren(T data, TreeNode parent)
         {
-            for (int i = 0; i < data.ToString().Length && i < parent.Data.ToString().Length; i++)
+            if(parent.Data.Equals(data))
             {
-                if (data.ToString()[i] < parent.Data.ToString()[i])
-                {
-                    if (parent.ChildrenNodes[0] != null)
-                    {
-                        if (!parent.ChildrenNodes[0].Data.Equals(data))
-                        {
-                            SearchThroughChildren(data, parent.ChildrenNodes[0]);
-                        }
-                        else
-                        {
-                            return (true, parent.ChildrenNodes[0]);
-                        }
-                    }
-                    else
-                    {
-                        return (false,null);
-                    }
-                }
-                else if (data.ToString()[i] > parent.Data.ToString()[i])
-                {
-                    if (parent.ChildrenNodes[1] != null)
-                    {
-                        if (!parent.ChildrenNodes[1].Data.Equals(data))
-                        {
-                            SearchThroughChildren(data, parent.ChildrenNodes[1]);
-                        }
-                        else
-                        {
-                            return (true, parent.ChildrenNodes[1]);
-                        }
-                    }
-                    else
-                    {
-                        return (false, null);
-                    }
-                }
-            }
-            if (data.ToString().Length < parent.Data.ToString().Length)
-            {
-                if (parent.ChildrenNodes[0] != null)
-                {
-                    if (!parent.ChildrenNodes[0].Data.Equals(data))
-                    {
-                        SearchThroughChildren(data, parent.ChildrenNodes[0]);
-                    }
-                    else
-                    {
-                        return (true, parent.ChildrenNodes[0]);
-                    }
-                }
-                else
-                {
-                    return (false, null);
-                }
+                return (true, parent);
             }
             else
             {
-                if (parent.ChildrenNodes[1] != null)
+                for (int i = 0; i < data.ToString().Length && i < parent.Data.ToString().Length; i++)
                 {
-                    if (!parent.ChildrenNodes[1].Data.Equals(data))
+                    if (data.ToString()[i] < parent.Data.ToString()[i])
                     {
-                        SearchThroughChildren(data, parent.ChildrenNodes[1]);
+                        if (parent.ChildrenNodes[0] != null)
+                        {
+                            if (!parent.ChildrenNodes[0].Data.Equals(data))
+                            {
+                                return(SearchThroughChildren(data, parent.ChildrenNodes[0]));
+                            }
+                            else
+                            {
+                                return (true, parent.ChildrenNodes[0]);
+                            }
+                        }
+                        else
+                        {
+                            return (false, null);
+                        }
                     }
-                    else
+                    else if (data.ToString()[i] > parent.Data.ToString()[i])
                     {
-                        return (true, parent.ChildrenNodes[1]);
+                        if (parent.ChildrenNodes[1] != null)
+                        {
+                            if (!parent.ChildrenNodes[1].Data.Equals(data))
+                            {
+                                return(SearchThroughChildren(data, parent.ChildrenNodes[1]));
+                            }
+                            else
+                            {
+                                return (true, parent.ChildrenNodes[1]);
+                            }
+                        }
+                        else
+                        {
+                            return (false, null);
+                        }
                     }
-                }
-                else
-                {
-                    return (false, null);
+                    else if (i == data.ToString().Length - 1 || i == parent.Data.ToString().Length - 1)
+                    {
+                        if (data.ToString().Length < parent.Data.ToString().Length)
+                        {
+                            if (parent.ChildrenNodes[0] != null)
+                            {
+                                if (!parent.ChildrenNodes[0].Data.Equals(data))
+                                {
+                                    return(SearchThroughChildren(data, parent.ChildrenNodes[0]));
+                                }
+                                else
+                                {
+                                    return (true, parent.ChildrenNodes[0]);
+                                }
+                            }
+                            else
+                            {
+                                return (false, null);
+                            }
+                        }
+                        else
+                        {
+                            if (parent.ChildrenNodes[1] != null)
+                            {
+                                if (!parent.ChildrenNodes[1].Data.Equals(data))
+                                {
+                                    return(SearchThroughChildren(data, parent.ChildrenNodes[1]));
+                                }
+                                else
+                                {
+                                    return (true, parent.ChildrenNodes[1]);
+                                }
+                            }
+                            else
+                            {
+                                return (false, null);
+                            }
+                        }
+                    }
                 }
             }
             return (false, null); //Code should never reach this point, but visual studio complains if it is not here
